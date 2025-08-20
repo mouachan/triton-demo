@@ -1,0 +1,5 @@
+model-registry>=0.1.0
+skl2onnx
+onnx
+onnxruntime
+boto3

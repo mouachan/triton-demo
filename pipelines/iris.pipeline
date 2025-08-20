@@ -1,0 +1,274 @@
+{
+  "doc_type": "pipeline",
+  "version": "3.0",
+  "json_schema": "http://api.dataplatform.ibm.com/schemas/common-pipeline/pipeline-flow/pipeline-flow-v3-schema.json",
+  "id": "elyra-auto-generated-pipeline",
+  "primary_pipeline": "primary",
+  "pipelines": [
+    {
+      "id": "primary",
+      "nodes": [
+        {
+          "id": "25650f70-21ea-4fc1-945d-1b3d77a03db7",
+          "type": "execution_node",
+          "op": "execute-python-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [],
+              "include_subdirectories": false,
+              "outputs": [
+                "data/X_train.pkl",
+                "data/X_test.pkl",
+                "data/y_train.pkl",
+                "data/y_test.pkl"
+              ],
+              "env_vars": [],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [],
+              "filename": "data_preprocessing.py",
+              "runtime_image": "quay.io/modh/odh-pipeline-runtime-datascience-cpu-py311-ubi9@sha256:58b260c5828299014802bf3fcd0004a97a949fdbfcee82057190e94a2ef16562"
+            },
+            "label": "",
+            "ui_data": {
+              "label": "data_preprocessing.py",
+              "image": "/notebook/triton-demo/triton-workbench/static/elyra/python.svg",
+              "x_pos": 144,
+              "y_pos": 172,
+              "description": "Run Python script"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              }
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "90b1e54a-2a8c-405e-bd4f-88c5a2bb6da8",
+          "type": "execution_node",
+          "op": "execute-python-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [],
+              "include_subdirectories": true,
+              "outputs": [
+                "models/iris_model.pkl",
+                "models/model_metadata.pkl",
+                "models/model_metadata.json"
+              ],
+              "env_vars": [
+                {
+                  "env_var": "PIP_EXTRA_PACKAGES",
+                  "value": "skl2onnx onnx onnxruntime"
+                }
+              ],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [],
+              "filename": "train_model.py",
+              "runtime_image": "quay.io/modh/odh-pipeline-runtime-datascience-cpu-py311-ubi9@sha256:58b260c5828299014802bf3fcd0004a97a949fdbfcee82057190e94a2ef16562"
+            },
+            "label": "",
+            "ui_data": {
+              "label": "train_model.py",
+              "image": "/notebook/triton-demo/triton-workbench/static/elyra/python.svg",
+              "x_pos": 417,
+              "y_pos": 264,
+              "description": "Run Python script"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              },
+              "links": [
+                {
+                  "id": "6c8cba43-6a3f-4a15-8a02-f13e7aaaf439",
+                  "node_id_ref": "25650f70-21ea-4fc1-945d-1b3d77a03db7",
+                  "port_id_ref": "outPort"
+                }
+              ]
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "8aca9a3c-489a-46d1-8e5c-63ee2fda6fc4",
+          "type": "execution_node",
+          "op": "execute-python-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [
+                "requirements.txt"
+              ],
+              "include_subdirectories": false,
+              "outputs": [
+                "evaluation/evaluation_metrics.pkl",
+                "evaluation/evaluation_metrics.json",
+                "evaluation/accuracy.txt",
+                "evaluation/registry_info.json",
+                "models/iris_model/config.pbtxt",
+                "models/iris_model/1/iris_model.onnx"
+              ],
+              "env_vars": [
+                {
+                  "env_var": "MODEL_REGISTRY_URL",
+                  "value": "https://modelregistry-rest.apps.cluster-v2mx6.v2mx6.sandbox1062.opentlc.com"
+                },
+                {
+                  "env_var": "AWS_S3_ENDPOINT",
+                  "value": "http://minio-api.minio.svc:9000"
+                },
+                {
+                  "env_var": "AWS_ACCESS_KEY_ID",
+                  "value": "minio"
+                },
+                {
+                  "env_var": "AWS_SECRET_ACCESS_KEY",
+                  "value": "minio123"
+                },
+                {
+                  "env_var": "AWS_S3_BUCKET",
+                  "value": "model-registry-bucket"
+                },
+                {
+                  "env_var": "MODEL_REGISTRY_AUTHOR",
+                  "value": "mouachan"
+                },
+                {
+                  "env_var": "MODEL_VERSION",
+                  "value": "1.0.0"
+                }
+              ],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [],
+              "runtime_image": "quay.io/modh/odh-pipeline-runtime-tensorflow-cuda-py311-ubi9@sha256:c3b0b4e991d465d5c32c76785b25837e2f232ddb28269ecf38ee021a74b5a5c7",
+              "filename": "evaluate_register_model.py"
+            },
+            "label": "",
+            "ui_data": {
+              "label": "evaluate_register_model.py",
+              "image": "/notebook/triton-demo/triton-workbench/static/elyra/python.svg",
+              "x_pos": 699,
+              "y_pos": 362,
+              "description": "Run Python script"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              },
+              "links": [
+                {
+                  "id": "afab9975-eecd-4fd0-b718-69a48fa01bf4",
+                  "node_id_ref": "90b1e54a-2a8c-405e-bd4f-88c5a2bb6da8",
+                  "port_id_ref": "outPort"
+                }
+              ]
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "app_data": {
+        "ui_data": {
+          "comments": []
+        },
+        "version": 8,
+        "runtime_type": "KUBEFLOW_PIPELINES",
+        "properties": {
+          "name": "iris",
+          "runtime": "Data Science Pipelines",
+          "pipeline_defaults": {
+            "mounted_volumes": [],
+            "kubernetes_tolerations": [],
+            "kubernetes_pod_annotations": [],
+            "kubernetes_shared_mem_size": {},
+            "kubernetes_pod_labels": [],
+            "kubernetes_secrets": [],
+            "env_vars": []
+          },
+          "pipeline_parameters": []
+        }
+      },
+      "runtime_ref": ""
+    }
+  ],
+  "schemas": []
+}
