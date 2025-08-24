@@ -5,50 +5,27 @@ Ce projet démontre l'utilisation de NVIDIA Triton Inference Server pour déploy
 ## 📋 Prérequis
 
 - OpenShift AI (RHODS) 2.22+
-- ArgoCD configuré
 - Model Registry opérationnel
 - MinIO/S3 accessible
 - MySQL pour le Model Registry
 
-## 🚀 Déploiement
-
-### 1. Déploiement via GitOps
-
-Le projet est configuré pour être déployé automatiquement via ArgoCD :
-
-```bash
-# Vérifier que ArgoCD est synchronisé
-oc get applications -n openshift-gitops
-
-# Forcer la synchronisation si nécessaire
-oc patch application openshift-ai-complete -n openshift-gitops --type='merge' -p='{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
-```
-
-### 2. Composants déployés
-
-- **MySQL Database** : `MYSQL_ENDPOINT_PLACEHOLDER`
-- **Model Registry** : `modelregistry` dans le namespace `rhoai-model-registries`
-- **MinIO Storage** : `MINIO_ENDPOINT_PLACEHOLDER`
-- **Jupyter Workbench** : `triton-workbench` dans le namespace `triton-demo`
-- **Triton Inference Server** : Pour servir les modèles
-
-## 📊 Utilisation du Notebook
+## 🚀 Utilisation
 
 ### 1. Accès au Workbench
 
 1. Connectez-vous à OpenShift AI Dashboard
 2. Allez dans le projet `triton-demo`
 3. Lancez le workbench `triton-workbench`
-4. Ouvrez le notebook `demos/triton-example/notebooks/iris_classification_notebook.ipynb`
+4. Ouvrez le notebook `notebooks/iris_classification.ipynb`
 
 ### 2. Configuration automatique
 
 Le workbench est configuré avec :
 - **Image** : `s2i-generic-data-science-notebook:2025.1`
-- **Variables d'environnement** :
-  - `MODEL_REGISTRY_URL` : URL du Model Registry
-  - `AWS_S3_ENDPOINT` : Endpoint MinIO
-  - `AWS_S3_BUCKET` : Bucket pour les modèles
+- **Variables d'environnement** :  
+  - `MODEL_REGISTRY_URL` : URL du Model Registry  
+  - `AWS_S3_ENDPOINT` : Endpoint MinIO  
+  - `AWS_S3_BUCKET` : Bucket pour les modèles  
   - `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` : Credentials S3
 
 ### 3. Test local
@@ -56,8 +33,8 @@ Le workbench est configuré avec :
 Vous pouvez tester le notebook localement :
 
 ```bash
-cd demos/triton-example
-python3 test_notebook.py
+cd notebooks
+python3 test_inference.py
 ```
 
 ## 🔧 Configuration
@@ -86,16 +63,16 @@ Le workbench utilise le secret `triton-demo-s3-connection` pour les credentials 
 ## 📁 Structure du projet
 
 ```
-demos/triton-example/
+triton-demo/
 ├── notebooks/
-│   └── iris_classification_notebook.ipynb  # Notebook principal
+│   └── iris_classification.ipynb  # Notebook principal
 ├── pipelines/
 │   ├── model_registry.py                   # Script pour Model Registry
 │   ├── model_training.py                   # Script d'entraînement
 │   └── ...
 ├── models/                                 # Modèles entraînés
 ├── data/                                   # Données
-├── test_notebook.py                        # Script de test local
+├── test_inference.py                       # Script de test local
 └── README.md                               # Ce fichier
 ```
 
@@ -126,19 +103,19 @@ demos/triton-example/
 
 ### Problèmes courants
 
-1. **Workbench ne démarre pas**
-   - Vérifiez les ressources CPU/Memory
-   - Vérifiez l'image Docker
+1. **Workbench ne démarre pas**  
+   - Vérifiez les ressources CPU/Memory  
+   - Vérifiez l'image Docker  
    - Vérifiez les secrets S3
 
-2. **Erreur de connexion S3**
-   - Vérifiez les credentials dans le secret
-   - Vérifiez l'endpoint MinIO
+2. **Erreur de connexion S3**  
+   - Vérifiez les credentials dans le secret  
+   - Vérifiez l'endpoint MinIO  
    - Vérifiez la connectivité réseau
 
-3. **Erreur Model Registry**
-   - Vérifiez l'URL du Model Registry
-   - Vérifiez la base de données MySQL
+3. **Erreur Model Registry**  
+   - Vérifiez l'URL du Model Registry  
+   - Vérifiez la base de données MySQL  
    - Vérifiez les permissions
 
 ### Logs utiles
@@ -165,7 +142,6 @@ oc logs -f deployment/mysql -n db-ai
 ### Dashboards
 
 - **OpenShift AI Dashboard** : Vue d'ensemble
-- **ArgoCD** : État du déploiement GitOps
 - **Grafana** : Métriques détaillées
 
 ## 🤝 Contribution
@@ -186,3 +162,9 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 - [NVIDIA Triton Documentation](https://github.com/triton-inference-server/server)
 - [Model Registry Documentation](https://model-registry.readthedocs.io/)
 - [Kubeflow Pipelines](https://www.kubeflow.org/docs/components/pipelines/)
+
+## 🔒 Sécurité
+
+Ce repository utilise des placeholders pour toutes les informations sensibles. Voir `SECURITY.md` pour plus de détails.
+
+**⚠️ IMPORTANT :** Ce repository contient uniquement la démo Triton. Pour l'installation complète d'OpenShift AI, consultez le repository principal `openshift-ai-setup`.
