@@ -9,7 +9,7 @@ echo "📦 Packages pré-installés, configuration en cours..."
 
 # Variables d'environnement
 NAMESPACE=${KUBERNETES_NAMESPACE:-"triton-demo"}
-CLUSTER_DOMAIN=${CLUSTER_DOMAIN:-"apps.cluster-v2mx6.v2mx6.sandbox1062.opentlc.com"}
+CLUSTER_DOMAIN=${CLUSTER_DOMAIN:-"apps.CLUSTER_DOMAIN_PLACEHOLDER"}
 
 # Fonction de configuration Elyra rapide
 configure_elyra_runtime() {

@@ -26,9 +26,9 @@ oc patch application openshift-ai-complete -n openshift-gitops --type='merge' -p
 
 ### 2. Composants déployés
 
-- **MySQL Database** : `mysql.db-ai.svc.cluster.local:3306`
+- **MySQL Database** : `MYSQL_ENDPOINT_PLACEHOLDER`
 - **Model Registry** : `modelregistry` dans le namespace `rhoai-model-registries`
-- **MinIO Storage** : `minio.db-ai.svc.cluster.local:9000`
+- **MinIO Storage** : `MINIO_ENDPOINT_PLACEHOLDER`
 - **Jupyter Workbench** : `triton-workbench` dans le namespace `triton-demo`
 - **Triton Inference Server** : Pour servir les modèles
 
@@ -68,13 +68,13 @@ Le workbench utilise les variables suivantes :
 
 ```yaml
 # Model Registry
-MODEL_REGISTRY_URL: "https://modelregistry-rest.apps.cluster-v2mx6.v2mx6.sandbox1062.opentlc.com"
-MODEL_REGISTRY_DATABASE_URL: "mysql://mlmduser:TheBlurstOfTimes@mysql.db-ai.svc.cluster.local:3306/model_registry"
+MODEL_REGISTRY_URL: "https://modelregistry-rest.apps.CLUSTER_DOMAIN_PLACEHOLDER"
+MODEL_REGISTRY_DATABASE_URL: "mysql://MYSQL_USER_PLACEHOLDER:MYSQL_PASSWORD_PLACEHOLDER@MYSQL_ENDPOINT_PLACEHOLDER/model_registry"
 
 # S3/MinIO
 AWS_ACCESS_KEY_ID: "accesskey"
 AWS_SECRET_ACCESS_KEY: "secretkey"
-AWS_S3_ENDPOINT: "minio.db-ai.svc.cluster.local:9000"
+AWS_S3_ENDPOINT: "MINIO_ENDPOINT_PLACEHOLDER"
 AWS_S3_BUCKET: "model-registry"
 AWS_S3_FORCE_PATH_STYLE: "true"
 ```

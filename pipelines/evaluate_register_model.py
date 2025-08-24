@@ -181,7 +181,7 @@ def try_convert_to_onnx(model, X_sample):
 def get_model_registry_config():
     """Configuration Model Registry"""
     
-    model_registry_url = "https://modelregistry-rest.apps.cluster-v2mx6.v2mx6.sandbox1062.opentlc.com"
+    model_registry_url = "https://modelregistry-rest.apps.CLUSTER_DOMAIN_PLACEHOLDER"
     token_path = "/var/run/secrets/kubernetes.io/serviceaccount/token"
     
     try:

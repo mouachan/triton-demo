@@ -164,7 +164,7 @@
               "env_vars": [
                 {
                   "env_var": "MODEL_REGISTRY_URL",
-                  "value": "https://modelregistry-rest.apps.cluster-v2mx6.v2mx6.sandbox1062.opentlc.com"
+                  "value": "https://modelregistry-rest.apps.CLUSTER_DOMAIN_PLACEHOLDER"
                 },
                 {
                   "env_var": "AWS_S3_ENDPOINT",
